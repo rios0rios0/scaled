@@ -20,6 +20,7 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 - changed the JavaScript dependencies to their latest versions
 - changed the JavaScript dependencies to their latest versions
+- changed the JavaScript dependencies to their latest versions
 
 ### Added
 
