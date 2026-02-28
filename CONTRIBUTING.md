@@ -7,8 +7,9 @@ development practices, refer to the **[Development Guide](https://github.com/rio
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+
-- [npm](https://www.npmjs.com/)
+- [Node.js](https://nodejs.org/) v8.0+
+- [Yarn](https://yarnpkg.com/) v1.x
+- [TypeScript](https://www.typescriptlang.org/) v3.3+ (installed via Yarn)
 
 ## Development Workflow
 
@@ -16,13 +17,27 @@ development practices, refer to the **[Development Guide](https://github.com/rio
 2. Create a branch: `git checkout -b feat/my-change`
 3. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
-4. Make your changes
-5. Build and test:
+4. Build the project (compile TypeScript and generate oclif manifest):
    ```bash
-   npm run build
-   npm test
+   yarn prepack
    ```
-6. Commit following the [commit conventions](https://github.com/rios0rios0/guide/wiki/Life-Cycle/Git-Flow)
-7. Open a pull request against `main`
+5. Run the linter:
+   ```bash
+   yarn lint
+   ```
+6. Fix lint issues automatically:
+   ```bash
+   yarn lint:fix
+   ```
+7. Run tests with coverage:
+   ```bash
+   yarn test
+   ```
+8. Run the CLI locally:
+   ```bash
+   ./bin/run start
+   ```
+9. Commit following the [commit conventions](https://github.com/rios0rios0/guide/wiki/Life-Cycle/Git-Flow)
+10. Open a pull request against `main`
