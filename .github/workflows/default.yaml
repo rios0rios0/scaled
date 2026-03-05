@@ -17,4 +17,4 @@ permissions:
 
 jobs:
   default:
-    uses: 'rios0rios0/pipelines/.github/workflows/javascript-npm.yaml@main'
+    uses: 'rios0rios0/pipelines/.github/workflows/javascript.yaml@main'

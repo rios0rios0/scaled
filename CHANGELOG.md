@@ -19,3 +19,7 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 ### Added
 
 - added GitHub Actions workflow for CI/CD pipeline
+
+### Fixed
+
+- fixed CI workflow to use yarn-based pipeline instead of npm-based pipeline
