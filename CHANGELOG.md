@@ -16,19 +16,17 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
-### Changed
-
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
+## [0.1.0] - 2026-03-10
 
 ### Added
 
 - added GitHub Actions workflow for CI/CD pipeline
 
+### Changed
+
+- changed the JavaScript dependencies to their latest versions
+
 ### Fixed
 
 - fixed CI workflow to use yarn-based pipeline instead of npm-based pipeline
+
