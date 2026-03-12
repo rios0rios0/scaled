@@ -41,6 +41,7 @@
   "homepage": "https://github.com/rios0rios0/Silent#README.md",
   "scripts": {
     "lint": "eslint ./src --ext .ts",
+    "lint:ci": "eslint ./src --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",

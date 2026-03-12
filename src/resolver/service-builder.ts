@@ -1,4 +1,4 @@
-import {ServiceDefinition} from '../types';
+import { ServiceDefinition } from '../types';
 
 export default class ServiceDefinitionBuilder {
   constructor(private name: string, private path: string) {}

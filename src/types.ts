@@ -68,7 +68,7 @@ export type NMAPReport = {
       hosts: [{ '$': { up: string, down: string, total: string } }]
     }]
   }
-}
+};
 
 export class Base64Message {
   constructor(private readonly message: string) {
