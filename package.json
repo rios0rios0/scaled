@@ -11,7 +11,9 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "bin": "./bin/run",
+  "bin": {
+    "silent": "./bin/run"
+  },
   "oclif": {
     "commands": "./lib/commands",
     "bin": "silent",
@@ -46,9 +48,6 @@
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "test:ci": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
-  },
-  "resolutions": {
-    "tmp": ">=0.2.4"
   },
   "dependencies": {
     "@oclif/command": "^1",
