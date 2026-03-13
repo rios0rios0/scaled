@@ -1,48 +1,60 @@
 import { isEmpty } from 'lodash';
-import { SQS } from 'aws-sdk';
+import {
+  SQSClient,
+  SendMessageCommand,
+  ReceiveMessageCommand,
+  DeleteMessageBatchCommand,
+  ListQueuesCommand,
+  Message,
+} from '@aws-sdk/client-sqs';
 import { Base64Message } from '../types';
+
+const SQS_ENDPOINT = 'http://localhost:9999';
 
 // eslint-disable-next-line import/prefer-default-export
 export class SQSHelper {
-  private readonly sqsClient: SQS = new SQS({
-    endpoint: 'http://localhost:9999',
+  private readonly sqsClient: SQSClient = new SQSClient({
+    endpoint: SQS_ENDPOINT,
     region: 'us-east-1',
   });
 
   public async sendMessage(queueUrl: string, messageBody: string): Promise<boolean> {
-    const params: SQS.SendMessageRequest = {
-      QueueUrl: queueUrl,
-      MessageBody: messageBody,
-    };
-
-    const response = await this.sqsClient.sendMessage(params).promise();
+    const response = await this.sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: queueUrl,
+        MessageBody: messageBody,
+      }),
+    );
 
     return !isEmpty(response);
   }
 
-  private async deleteMessages(queueUrl: string, messages: SQS.Message[]): Promise<void> {
+  private async deleteMessages(queueUrl: string, messages: Message[]): Promise<void> {
     const entries = messages.map((message) => ({ Id: message.MessageId ?? '', ReceiptHandle: message.ReceiptHandle ?? '' }));
-    await this.sqsClient.deleteMessageBatch({
-      QueueUrl: queueUrl,
-      Entries: entries,
-    }).promise();
+    await this.sqsClient.send(
+      new DeleteMessageBatchCommand({
+        QueueUrl: queueUrl,
+        Entries: entries,
+      }),
+    );
   }
 
   public async receiveAllMessages(queueName: string): Promise<Base64Message[]> {
-    const params: SQS.ReceiveMessageRequest = {
-      QueueUrl: `${this.sqsClient.endpoint.href}000000000000/${queueName}`,
-      MaxNumberOfMessages: 10,
-    };
+    const queueUrl = `${SQS_ENDPOINT}/000000000000/${queueName}`;
 
-    let messages: SQS.MessageList = [];
+    let messages: Message[] = [];
     const base64Messages: Base64Message[] = [];
     try {
       do {
-        const response: SQS.ReceiveMessageResult = await this.sqsClient
-          .receiveMessage(params).promise();
+        const response = await this.sqsClient.send(
+          new ReceiveMessageCommand({
+            QueueUrl: queueUrl,
+            MaxNumberOfMessages: 10,
+          }),
+        );
         messages = response.Messages ?? [];
         if (messages?.length > 0) {
-          await this.deleteMessages(params.QueueUrl, messages);
+          await this.deleteMessages(queueUrl, messages);
           messages?.map((message) => base64Messages.push(new Base64Message(message.Body ?? '')));
         }
       } while (messages.length > 0);
@@ -58,13 +70,14 @@ export class SQSHelper {
   public async waitForQueue(queueName: string): Promise<void> {
     return new Promise((resolve) => {
       const interval = setInterval(async () => {
-        let response: SQS.ListQueuesResult = {};
+        let queueUrls: string[] | undefined;
         try {
-          response = await this.sqsClient.listQueues().promise();
+          const response = await this.sqsClient.send(new ListQueuesCommand({}));
+          queueUrls = response.QueueUrls;
         } catch (error) {
-          Object.assign(response, { QueueUrls: undefined });
+          queueUrls = undefined;
         }
-        if (response.QueueUrls && response.QueueUrls?.find((queue) => queue.includes(queueName))) {
+        if (queueUrls?.find((queue) => queue.includes(queueName))) {
           resolve();
           clearInterval(interval);
         }

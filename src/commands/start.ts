@@ -109,8 +109,8 @@ export default class Start extends Command {
       await tasks.run();
 
       printServices(service, JSON.parse('{}'));
-    } catch (e) {
-      this.error(e.message);
+    } catch (e: unknown) {
+      this.error((e as Error).message);
     }
   }
 

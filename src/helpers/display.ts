@@ -5,7 +5,7 @@ import * as util from 'util';
 import { ServiceDefinition } from '../types';
 
 marked.setOptions({
-  renderer: new TerminalRenderer(),
+  renderer: new TerminalRenderer() as unknown as marked.Renderer,
 });
 
 export const printServices = (service: ServiceDefinition, report: JSON) => {

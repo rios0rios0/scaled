@@ -5,10 +5,15 @@
     "module": "commonjs",
     "outDir": "lib",
     "rootDir": "src",
+    "skipLibCheck": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "types": ["node", "mocha", "chai", "lodash", "inquirer", "listr", "marked", "marked-terminal", "terminal-kit", "xml2js"]
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
