@@ -7,7 +7,7 @@ RUN apk update && apk add --no-cache \
     nmap nmap-nselibs nmap-scripts openssh && \
     rm -rf /etc/apk/cache
 
-RUN pip install awscli
+RUN pip install --no-cache-dir 'awscli==1.27.0'
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
