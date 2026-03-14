@@ -27,6 +27,11 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 - changed the JavaScript dependencies to their latest versions
 - changed the JavaScript dependencies to their latest versions
 
+### Security
+
+- fixed `minimatch` ReDoS vulnerability by upgrading `mocha` to v11
+- fixed `aws-sdk` v2 region validation vulnerability by migrating to `@aws-sdk/client-sqs` v3
+- fixed `tmp` symlink vulnerability by adding yarn resolution to force v0.2.x
 ### Added
 
 - added GitHub Actions workflow for CI/CD pipeline

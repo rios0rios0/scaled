@@ -1,14 +1,14 @@
 import * as path from 'path';
 import * as execa from 'execa';
-import {ServiceDefinition} from '../types';
-import {SQSHelper} from '../helpers/sqs';
-import {NMAPReportService} from '../infrastructure/services/nmap-report-service';
+import { ServiceDefinition } from '../types';
+import { SQSHelper } from '../helpers/sqs';
+import { NMAPReportService } from '../infrastructure/services/nmap-report-service';
 
 type Flags = {
   build?: boolean,
   containers?: number,
   'set-env'?: string[]
-}
+};
 
 export default class ServiceManager {
   async start(
@@ -24,20 +24,22 @@ export default class ServiceManager {
       '--remove-orphans',
     ];
 
-    let opts = {
+    const opts = {
       env: {
         CONTAINERS: `${flags.containers}`,
       },
     };
 
-    if (flags['set-env'] && flags['set-env']?.length > 0) flags['set-env'].map((value) => {
-      Object.assign(opts.env, {[value.split('=')[0]]: value.split('=')[1]});
-    });
+    if (flags['set-env'] && flags['set-env']?.length > 0) {
+      flags['set-env'].forEach((value) => {
+        Object.assign(opts.env, { [value.split('=')[0]]: value.split('=')[1] });
+      });
+    }
 
     if (flags.build) args.push('--build', '--always-recreate-deps');
     if (flags.containers && flags.containers > 1) args.push('--scale', `${service.name}=${flags.containers}`);
 
-    const subprocess = execa('docker-compose', args, {...opts});
+    const subprocess = execa('docker-compose', args, { ...opts });
     subprocess.stdout.on('data', (data) => onUpdate(data.toString()));
 
     await subprocess;
@@ -72,13 +74,11 @@ export default class ServiceManager {
     totalContainers: number,
     onUpdate: (message: string) => void,
   ): Promise<void> {
-    return await new Promise(resolve => {
+    return new Promise((resolve) => {
       const interval = setInterval(async () => {
-
         const subprocess = await execa('docker', ['ps']);
-        const runningContainers = subprocess.stdout.split('\n').filter((line: string) => {
-          return line.includes(`${service.name}_${service.name}`);
-        });
+        const runningContainers = subprocess.stdout.split('\n')
+          .filter((line: string) => line.includes(`${service.name}_${service.name}`));
 
         const done = totalContainers - runningContainers.length;
         onUpdate(`Waiting termination of '${service.name}' containers [${done}/${totalContainers}]...`);

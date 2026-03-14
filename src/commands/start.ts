@@ -1,13 +1,13 @@
-import {Command, flags} from '@oclif/command';
+import { Command, flags } from '@oclif/command';
 import * as Listr from 'listr';
 import * as execa from 'execa';
 import * as path from 'path';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import * as fs from 'fs';
-import {ServiceDefinition} from '../types';
+import { ServiceDefinition } from '../types';
 import ServiceManager from '../manager';
 import Resolver from '../resolver';
-import {printServices} from '../helpers/display';
+import { printServices } from '../helpers/display';
 
 export default class Start extends Command {
   static description = 'start a service';
@@ -47,12 +47,9 @@ export default class Start extends Command {
   private manager = new ServiceManager();
 
   async run() {
-
-
-    const {args: {service: serviceName}, flags: startFlags} = this.parse(Start);
+    const { args: { service: serviceName }, flags: startFlags } = this.parse(Start);
 
     try {
-      let finalReport: string = '';
       const service = await this.resolver.resolveService(serviceName);
 
       if (!service) {
@@ -60,7 +57,7 @@ export default class Start extends Command {
       }
 
       process.on('SIGINT', async () => {
-        //this.error('Removing containers gracefully...');
+        // this.error('Removing containers gracefully...');
         await this.manager.stop(service!);
         process.exit();
       });
@@ -94,27 +91,26 @@ export default class Start extends Command {
           task: () => new Observable((resolve) => {
             this.manager.report(service, startFlags.containers,
               (message) => resolve.next(message))
-              .then((report) => {
-                finalReport = report;
-
-              })
+              .then(() => undefined)
               .catch((e) => resolve.error(e));
             resolve.complete();
           }),
         },
-        /*{
-          title: 'Removing all containers...',
-          task: () =>new Observable((resolve) => {
-            this.manager.stop(service).then(() => resolve.complete()).catch((e) => resolve.error(e));
-          }),
-        }*/
+        // {
+        //   title: 'Removing all containers...',
+        //   task: () => new Observable((resolve) => {
+        //     this.manager.stop(service)
+        //       .then(() => resolve.complete())
+        //       .catch((e) => resolve.error(e));
+        //   }),
+        // }
       ]);
 
       await tasks.run();
 
       printServices(service, JSON.parse('{}'));
-    } catch (e) {
-      this.error(e.message);
+    } catch (e: unknown) {
+      this.error((e as Error).message);
     }
   }
 
