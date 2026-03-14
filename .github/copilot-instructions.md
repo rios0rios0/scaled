@@ -2,11 +2,11 @@
 
 ## Project Overview
 
-**Scaled** (codename "Silent") is a TypeScript CLI tool built with the [oclif](https://oclif.io/) framework.
+**Scaled** (codename "scaled") is a TypeScript CLI tool built with the [oclif](https://oclif.io/) framework.
 It orchestrates security scanning tools (Nmap, Nikto, SQLMap) by running them inside Docker containers,
 parsing the resulting scan reports, and optionally distributing jobs via AWS SQS.
 
-The npm package name is `@rios0rios0/silent` and the CLI binary is `silent`.
+The npm package name is `@rios0rios0/scaled` and the CLI binary is `scaled`.
 
 ---
 
@@ -20,7 +20,7 @@ bin/
   run                     # CLI entry-point script
 src/
   commands/
-    start.ts              # The only CLI command; entry-point for `silent start`
+    start.ts              # The only CLI command; entry-point for `scaled start`
   domain/
     entities/             # Domain entities (e.g. NmapReadableReport)
     repositories/         # Repository contracts/interfaces

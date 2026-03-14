@@ -868,9 +868,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rios0rios0/silent@workspace:.":
+"@rios0rios0/scaled@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@rios0rios0/silent@workspace:."
+  resolution: "@rios0rios0/scaled@workspace:."
   dependencies:
     "@aws-sdk/client-sqs": "npm:^3.1009.0"
     "@oclif/command": "npm:^1"
@@ -911,7 +911,7 @@ __metadata:
     xml2js: "npm:^0.5.0"
     yaml: "npm:^1.10.0"
   bin:
-    silent: ./bin/run
+    scaled: ./bin/run
   languageName: unknown
   linkType: soft
 

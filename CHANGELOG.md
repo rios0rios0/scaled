@@ -16,26 +16,22 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
-### Changed
+## [0.1.0] - 2026-03-13
 
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-- changed the JavaScript dependencies to their latest versions
-
-### Security
-
-- fixed `minimatch` ReDoS vulnerability by upgrading `mocha` to v11
-- fixed `aws-sdk` v2 region validation vulnerability by migrating to `@aws-sdk/client-sqs` v3
-- fixed `tmp` symlink vulnerability by adding yarn resolution to force v0.2.x
 ### Added
 
 - added GitHub Actions workflow for CI/CD pipeline
 
+### Changed
+
+- changed the JavaScript dependencies to their latest versions
+
 ### Fixed
 
-- fixed CI workflow to use yarn-based pipeline instead of npm-based pipeline
+- fixed CI workflow to use Yarn-based pipeline instead of NPM-based pipeline
+
+### Security
+
+- fixed `aws-sdk` `v2` region validation vulnerability by migrating to `@aws-sdk/client-sqs` `v3`
+- fixed `minimatch` ReDoS vulnerability by upgrading `mocha` to `v11`
+- fixed `tmp` symlink vulnerability by adding Yarn resolution to force `v0.2.x`

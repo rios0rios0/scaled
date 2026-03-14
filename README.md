@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/github/actions/workflow/status/rios0rios0/scaled/default.yaml?branch=main&style=for-the-badge&logo=github" alt="Build Status"/></a>
 </p>
 
-A TypeScript CLI tool (codename "Silent") for orchestrating security scanning tools like Nmap, Nikto, and SQLMap, with support for parsing scan reports and distributing jobs via AWS SQS.
+A TypeScript CLI tool (codename "scaled") for orchestrating security scanning tools like Nmap, Nikto, and SQLMap, with support for parsing scan reports and distributing jobs via AWS SQS.
 
 ## Features
 

@@ -1,6 +1,6 @@
 {
-  "name": "@rios0rios0/silent",
-  "version": "0.0.3",
+  "name": "@rios0rios0/scaled",
+  "version": "0.1.0",
   "license": "MIT",
   "packageManager": "yarn@4.12.0",
   "description": "",
@@ -15,7 +15,7 @@
   "bin": "./bin/run",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "silent",
+    "bin": "scaled",
     "plugins": [
       "@oclif/plugin-help"
     ]
@@ -28,16 +28,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rios0rios0/Silent.git"
+    "url": "git+https://github.com/rios0rios0/scaled.git"
   },
   "author": "rios0rios0",
   "bugs": {
-    "url": "https://github.com/rios0rios0/Silent/issues"
+    "url": "https://github.com/rios0rios0/scaled/issues"
   },
   "directories": {
     "test": "tests"
   },
-  "homepage": "https://github.com/rios0rios0/Silent#README.md",
+  "homepage": "https://github.com/rios0rios0/scaled#README.md",
   "scripts": {
     "lint": "eslint ./src --ext .ts",
     "lint:ci": "eslint ./src --ext .ts",
