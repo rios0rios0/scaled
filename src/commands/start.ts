@@ -39,7 +39,7 @@ export default class Start extends Command {
   };
 
   static examples = [
-    '$ silent start <tool> --containers <number> --set-env <key>=<value>',
+    '$ scaled start <tool> --containers <number> --set-env <key>=<value>',
   ];
 
   private resolver = new Resolver();
