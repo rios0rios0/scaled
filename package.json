@@ -45,8 +45,8 @@
     "build": "tsc -b",
     "postpack": "rm -f oclif.manifest.json",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "test": "nyc --extension .ts mocha --forbid-only --exit \"test/**/*.test.ts\" || true",
-    "test:ci": "nyc --extension .ts mocha --forbid-only --exit \"test/**/*.test.ts\" || true",
+    "test": "nyc --extension .ts mocha --require ts-node/register --forbid-only --exit \"test/**/*.test.ts\" || true",
+    "test:ci": "nyc --extension .ts mocha --require ts-node/register --forbid-only --exit \"test/**/*.test.ts\" || true",
     "version": "oclif-dev readme && git add README.md"
   },
   "dependencies": {
