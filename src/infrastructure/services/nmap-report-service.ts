@@ -1,5 +1,4 @@
 import { parseStringPromise as parser } from 'xml2js';
-import * as util from 'util';
 import { Base64Message, NMAPReport, NMAPService } from '../../types';
 import { ReportService } from '../../domain/services/report-service';
 import { NMAPReadableReport, Readable } from '../../domain/entities/nmap-readable-report';
@@ -7,7 +6,7 @@ import { NMAPReadableReport, Readable } from '../../domain/entities/nmap-readabl
 // eslint-disable-next-line import/prefer-default-export
 export class NMAPReportService extends ReportService {
   private static unique(haystack: Array<any>, needle: Array<any>, key: string): Array<any> {
-    return haystack.concat(needle.filter((item) => !haystack.includes({ [key]: item[key] })));
+    return haystack.concat(needle.filter((item) => !haystack.some((h) => h[key] === item[key])));
   }
 
   private static reducer(iterable: Array<any>): Array<any> {
@@ -43,10 +42,13 @@ export class NMAPReportService extends ReportService {
               }))),
             );
 
-            console.log('ports', util.inspect(host.ports, { depth: 5, colors: true }));
-
-            if (final.ports) final.ports = NMAPReportService.unique(final.ports, ports, 'id');
-            else final = { hostnames, ports: [...ports] };
+            if (final.ports) {
+              final.ports = NMAPReportService.unique(final.ports, ports, 'id');
+              const mergedHostnames = (final.hostnames || []).concat(hostnames);
+              final.hostnames = Array.from(new Set(mergedHostnames));
+            } else {
+              final = { hostnames, ports: [...ports] };
+            }
           });
         }
       });
