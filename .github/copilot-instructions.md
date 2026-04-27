@@ -52,7 +52,7 @@ tools/
 
 | Layer | Technology |
 |---|---|
-| Language | TypeScript 3.3+ |
+| Language | TypeScript 5.x |
 | CLI framework | oclif v1 (`@oclif/command`, `@oclif/config`) — note: v1 is deprecated; consider migrating to oclif v3 |
 | Task runner | Listr |
 | HTTP client | Axios |
@@ -64,7 +64,7 @@ tools/
 | Config parsing | yaml, xml2js |
 | Utilities | lodash, rxjs |
 | Runtime | Node.js ≥ 8.0 (as declared in `package.json`; Node.js 8 is EOL — upgrade recommended) |
-| Package manager | Yarn 1.x |
+| Package manager | Yarn 4.x (Berry, `node-modules` linker) |
 
 ---
 
@@ -85,7 +85,7 @@ yarn lint:fix          # auto-fix lint issues
 yarn test              # ~5-10 s
 
 # Run the CLI locally after building
-./bin/run start <service> [--containers <n>] [--set-env KEY=VALUE]
+./bin/run start <service> [--build] [--containers <n>] [--set-env KEY=VALUE]
 ```
 
 > **Note:** `yarn prepack` must be run before `./bin/run` because the compiled output lives in `lib/`.

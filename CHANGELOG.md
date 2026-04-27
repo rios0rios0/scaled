@@ -16,6 +16,14 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
+### Added
+
+- added `CLAUDE.md` with build commands, architecture overview, and repo conventions
+
+### Changed
+
+- refreshed `.github/copilot-instructions.md` to fix TypeScript (3.3+ → 5.x) and Yarn (1.x → 4.x Berry) versions, and document the `--build` CLI flag
+
 ## [0.1.0] - 2026-03-13
 
 ### Added
