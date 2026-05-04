@@ -104,7 +104,7 @@ yarn test              # ~5-10 s
 
 ## CI/CD Pipeline
 
-The workflow file `.github/workflows/default.yaml` delegates all steps to the shared reusable workflow at `rios0rios0/pipelines/.github/workflows/javascript.yaml@main`.
+The workflow file `.github/workflows/default.yaml` delegates all steps to the shared reusable workflow at `rios0rios0/pipelines/.github/workflows/yarn-library.yaml@main`.
 
 Triggers:
 - Push to `main`
