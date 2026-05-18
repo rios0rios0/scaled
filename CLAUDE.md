@@ -37,4 +37,4 @@ Single command: `scaled start <service> [--build] [--containers <n>] [--set-env 
 
 ## CI
 
-`.github/workflows/default.yaml` delegates to `rios0rios0/pipelines/.github/workflows/javascript.yaml@main`. Triggers on push to `main`, tags, PRs to `main`, and manual dispatch.
+`.github/workflows/default.yaml` delegates to `rios0rios0/pipelines/.github/workflows/yarn-library.yaml@main`. Triggers on push to `main`, tags, PRs to `main`, and manual dispatch.
