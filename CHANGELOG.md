@@ -16,6 +16,8 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-06-22
+
 ### Changed
 
 - refreshed `CLAUDE.md` and `.github/copilot-instructions.md` to correct the strategy-pattern description (only `LocalResolver` ships; there is no remote strategy)
