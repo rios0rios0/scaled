@@ -95,7 +95,7 @@ yarn test              # ~5-10 s
 ## Architecture and Design Patterns
 
 - **Domain-Driven Design (DDD):** Code is split into `domain/` (entities, repository & service contracts) and `infrastructure/` (concrete implementations). This keeps business logic decoupled from I/O.
-- **Strategy pattern:** `src/resolver/strategy/` contains pluggable execution strategies (e.g. running tools locally vs. remotely).
+- **Strategy pattern:** `src/resolver/strategy/` contains pluggable service resolvers behind `ResolverInterface`; only `LocalResolver` (local-filesystem lookup) is implemented so far.
 - **Service Builder:** `src/resolver/service-builder.ts` constructs `ServiceDefinition` objects which carry the name and file-system path of a tool.
 - **Listr task lists:** Long-running operations are presented as an ordered list of observable tasks in the terminal.
 - **Docker-first tool execution:** Each supported scanner (Nmap, Nikto, SQLMap) has its own `docker-compose.yml` under `tools/`, ensuring isolated and reproducible runs.

@@ -21,7 +21,7 @@ yarn test                 # mocha + nyc coverage
 TypeScript CLI built on oclif v1 (`@oclif/command`). Orchestrates security scanners (Nmap, Nikto, SQLMap) via Docker Compose.
 
 - **DDD layout**: `src/domain/` holds entities, repository contracts, and service interfaces. `src/infrastructure/` has concrete implementations. Business logic stays decoupled from I/O.
-- **Strategy pattern**: `src/resolver/strategy/` provides pluggable execution strategies (local vs. remote).
+- **Strategy pattern**: `src/resolver/strategy/` holds pluggable service resolvers behind `ResolverInterface`; only `LocalResolver` (local-filesystem lookup under `tools/`) is implemented today.
 - **Service builder**: `src/resolver/service-builder.ts` constructs `ServiceDefinition` objects (name + path to a tool directory under `tools/`).
 - **Manager**: `src/manager/` handles the start → report → stop lifecycle via Listr task lists.
 - **Docker-first**: each scanner lives under `tools/<name>/` with its own `docker-compose.yml`.
