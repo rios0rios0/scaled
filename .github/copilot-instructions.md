@@ -41,9 +41,9 @@ src/
   types.ts                # Shared TypeScript types (ServiceDefinition, NMAPReport, …)
 tools/
   nmap/
-    docker-compose.yml    # Dockerised Nmap configuration
-  nikto/                  # Dockerised Nikto configuration
-  sqlmap/                 # Dockerised SQLMap configuration
+    docker-compose.yml    # Dockerised Nmap configuration (Dockerfile + entrypoint.sh)
+  nikto/                  # empty placeholder (.gitkeep only — not yet implemented)
+  sqlmap/                 # empty placeholder (.gitkeep only — not yet implemented)
 ```
 
 ---
@@ -98,7 +98,7 @@ yarn test              # ~5-10 s
 - **Strategy pattern:** `src/resolver/strategy/` contains pluggable service resolvers behind `ResolverInterface`; only `LocalResolver` (local-filesystem lookup) is implemented so far.
 - **Service Builder:** `src/resolver/service-builder.ts` constructs `ServiceDefinition` objects which carry the name and file-system path of a tool.
 - **Listr task lists:** Long-running operations are presented as an ordered list of observable tasks in the terminal.
-- **Docker-first tool execution:** Each supported scanner (Nmap, Nikto, SQLMap) has its own `docker-compose.yml` under `tools/`, ensuring isolated and reproducible runs.
+- **Docker-first tool execution:** A scanner is defined by `tools/<name>/docker-compose.yml`. Only `nmap` ships one today; `nikto` and `sqlmap` are empty placeholders. `LocalResolver` resolves a service only when that compose file exists, so `scaled start nikto` / `sqlmap` fail with "Service not found" until they are implemented. Report parsing is likewise Nmap-only (`NMAPReportService` is the sole implementation).
 
 ---
 
