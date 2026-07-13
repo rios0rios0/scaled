@@ -24,7 +24,7 @@ TypeScript CLI built on oclif v1 (`@oclif/command`). Orchestrates security scann
 - **Strategy pattern**: `src/resolver/strategy/` holds pluggable service resolvers behind `ResolverInterface`; only `LocalResolver` (local-filesystem lookup under `tools/`) is implemented today.
 - **Service builder**: `src/resolver/service-builder.ts` constructs `ServiceDefinition` objects (name + path to a tool directory under `tools/`).
 - **Manager**: `src/manager/` handles the start → report → stop lifecycle via Listr task lists.
-- **Docker-first**: each scanner lives under `tools/<name>/` with its own `docker-compose.yml`.
+- **Docker-first**: each scanner lives under `tools/<name>/` with its own `docker-compose.yml`. Only `nmap` is populated today — `tools/nikto/` and `tools/sqlmap/` are empty placeholders. `LocalResolver` resolves a service only when `tools/<name>/docker-compose.yml` exists, so `scaled start nikto` / `sqlmap` currently fail with "Service not found".
 
 Single command: `scaled start <service> [--build] [--containers <n>] [--set-env KEY=VALUE]`.
 
