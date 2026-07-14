@@ -16,6 +16,8 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-07-14
+
 ### Changed
 
 - refreshed `CLAUDE.md` and `.github/copilot-instructions.md` to correct the Docker-first claim: only `tools/nmap/` has a `docker-compose.yml`, while `tools/nikto/` and `tools/sqlmap/` are empty placeholders, so only `nmap` is runnable today
