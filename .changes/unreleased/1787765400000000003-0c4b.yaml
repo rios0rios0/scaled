@@ -1,3 +1,0 @@
-kind: 'Fixed'
-body: 'fixed the `main` pipeline''s `sca:yarn-audit` job, which reported fifteen high-severity advisories against six transitive packages. Every fixed version was already inside the ranges the dependents ask for, so the lockfile was simply stale: `brace-expansion` moved to 1.1.18/2.1.4/5.0.9, `js-yaml` to 3.15.1/4.3.1, `flatted` to 3.4.4, `tmp` to 0.2.7 and `lodash` to 4.18.1. `fast-xml-parser` was the exception -- `@aws-sdk/xml-builder` pinned it exactly -- and it left the dependency tree entirely when that package moved to 3.972.39, which dropped the dependency upstream. No advisory was suppressed and no `resolutions` entry was added.'
-time: '2026-08-26T17:30:00.000000000Z'

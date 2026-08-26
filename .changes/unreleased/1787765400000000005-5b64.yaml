@@ -1,3 +1,0 @@
-kind: 'Changed'
-body: 'updated `.github/copilot-instructions.md` and `CLAUDE.md` to match the dependency cleanup: dropped `axios` and `yaml` from the technology stack table, recorded that `.mocharc.json` is what loads TypeScript specs through ts-node, and wrote down which CI gates actually fail the run and which are `continue-on-error` -- along with the `npmMinimalAgeGate` rule, which is the one that will surprise anyone trying to bump to a release published this week'
-time: '2026-08-26T17:30:00.000000000Z'
