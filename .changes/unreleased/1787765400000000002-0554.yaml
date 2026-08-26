@@ -1,0 +1,3 @@
+kind: 'Fixed'
+body: 'fixed the `main` pipeline''s `sast:semgrep` job by setting `npmMinimalAgeGate: "7d"` in `.yarnrc.yml`. Yarn now refuses to resolve any package version published less than seven days ago, which is the window in which a compromised maintainer account or a typosquat is still unreported -- the single most direct npm supply-chain path, closed without pinning anything by hand.'
+time: '2026-08-26T17:30:00.000000000Z'

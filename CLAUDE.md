@@ -10,7 +10,7 @@ yarn build                # compile TypeScript → lib/
 yarn prepack              # full build: clean lib/, compile, generate oclif manifest + README
 yarn lint                 # ESLint with airbnb-typescript/base
 yarn lint:fix             # auto-fix lint issues
-yarn test                 # mocha + nyc coverage
+yarn test                 # mocha + nyc coverage (`.mocharc.json` loads TS specs via ts-node)
 ./bin/run start <service> # run CLI (requires prior build)
 ```
 

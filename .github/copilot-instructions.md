@@ -55,13 +55,12 @@ tools/
 | Language | TypeScript 5.x |
 | CLI framework | oclif v1 (`@oclif/command`, `@oclif/config`) — note: v1 is deprecated; consider migrating to oclif v3 |
 | Task runner | Listr |
-| HTTP client | Axios |
 | Cloud | AWS SDK (SQS) |
 | Process execution | execa |
 | User prompts | Inquirer |
 | Report rendering | marked + marked-terminal |
 | Terminal UI | terminal-kit |
-| Config parsing | yaml, xml2js |
+| Report parsing | xml2js |
 | Utilities | lodash, rxjs |
 | Runtime | Node.js ≥ 8.0 (as declared in `package.json`; Node.js 8 is EOL — upgrade recommended) |
 | Package manager | Yarn 4.x (Berry, `node-modules` linker) |
@@ -81,7 +80,7 @@ yarn prepack           # ~10-20 s
 yarn lint              # ~5 s
 yarn lint:fix          # auto-fix lint issues
 
-# Test (mocha + nyc coverage)
+# Test (mocha + nyc coverage; `.mocharc.json` loads TypeScript specs through ts-node)
 yarn test              # ~5-10 s
 
 # Run the CLI locally after building
@@ -113,6 +112,15 @@ Triggers:
 - Manual (`workflow_dispatch`)
 
 Required permissions: `security-events: write`, `contents: write`.
+
+Not every gate blocks. `quality:basic-checks`, `style:format`, `sast:codeql`, `sast:semgrep`,
+`sast:gitleaks` and both `tests` jobs fail the run; `style:eslint`, `quality:knip` (configured by
+`knip.jsonc`), `sast:hadolint` and `sca:yarn-audit` are `continue-on-error`, so they go red in the
+job list without failing the workflow. Treat a red advisory job as a real finding anyway — it is
+the only signal you get before it becomes a blocking one.
+
+`.yarnrc.yml` sets `npmMinimalAgeGate`, so a version published in the last seven days will not
+resolve — bumping to a brand-new release means waiting it out.
 
 ---
 
