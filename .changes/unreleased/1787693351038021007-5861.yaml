@@ -1,3 +1,0 @@
-kind: 'Changed'
-body: 'refreshed `CLAUDE.md` and `.github/copilot-instructions.md` to correct the Docker-first claim: only `tools/nmap/` has a `docker-compose.yml`, while `tools/nikto/` and `tools/sqlmap/` are empty placeholders, so only `nmap` is runnable today'
-time: '2026-08-25T21:29:11.037672412Z'
