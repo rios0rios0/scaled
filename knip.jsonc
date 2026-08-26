@@ -1,0 +1,31 @@
+{
+  // knip cannot see two things about this project on its own, and both make it
+  // report live code as dead. Everything below tells it what is actually true;
+  // nothing here suppresses a real finding.
+
+  // `src/commands/*` is never imported: oclif discovers commands by reading the
+  // directory named in `oclif.commands` at run time. Declaring the commands as
+  // entry points is what makes the whole graph hanging off them (manager,
+  // resolver, helpers, domain, infrastructure) reachable.
+  "entry": ["src/index.ts", "src/commands/**/*.ts"],
+  "project": ["src/**/*.ts"],
+
+  // This is an oclif CLI, but it predates `@oclif/core` and still uses
+  // `@oclif/command` + `@oclif/config`, which knip's oclif plugin does not
+  // recognise as enablers. Turning the plugin on explicitly is what lets knip
+  // read the `oclif` block in package.json -- and so see that
+  // `@oclif/plugin-help` is loaded at run time via `oclif.plugins`.
+  "oclif": true,
+
+  // `docker-compose` is a host binary invoked through execa in
+  // src/manager/index.ts, not an npm package this project could depend on.
+  "ignoreBinaries": ["docker-compose"],
+
+  // `eslint-plugin-import` is never imported by name: it is a peer dependency
+  // of `eslint-config-airbnb-base` (reached through `airbnb-typescript/base` in
+  // .eslintrc), so eslint has to be able to resolve it from the project root.
+  // Removing it breaks `yarn lint`, and the codebase relies on its rules --
+  // see the `import/prefer-default-export` disables in src/helpers/display.ts,
+  // src/helpers/sqs.ts and src/domain/services/report-service.ts.
+  "ignoreDependencies": ["eslint-plugin-import"]
+}
