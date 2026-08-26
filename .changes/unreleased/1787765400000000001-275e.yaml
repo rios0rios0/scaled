@@ -1,0 +1,3 @@
+kind: 'Fixed'
+body: 'fixed the `main` pipeline''s `sast:hadolint` job, which had been failing on `tools/nmap/Dockerfile` for two reasons: the image switched to a user named `appuser`, whose name a host cannot resolve to an id when the container filesystem is mounted elsewhere (DL3066), and the healthcheck was written in shell form, so it depended on whatever `/bin/sh` the base image happened to ship (DL3025). The user and group are now created with an explicit id of `10001` and `USER` names that number, and the healthcheck is spelled in exec form. The container still runs unprivileged and still reports healthy the same way.'
+time: '2026-08-26T17:30:00.000000000Z'

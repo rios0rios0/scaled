@@ -9,10 +9,10 @@ RUN apk update && apk add --no-cache \
 
 RUN pip install --no-cache-dir 'awscli==1.27.0'
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+RUN addgroup -g 10001 -S appgroup && adduser -u 10001 -S -G appgroup appuser
+USER 10001
 
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD echo "healthy" || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD ["/bin/sh", "-c", "echo healthy || exit 1"]
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
