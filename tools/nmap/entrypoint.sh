@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
@@ -17,58 +17,67 @@ start_wait_tor () {
   echo "Started Tor."
 }
 
+send_targets_batch () {
+  aws --endpoint-url=http://sqs:4576 sqs send-message-batch \
+      --queue-url http://sqs:4576/000000000000/targets \
+      --entries "file://$1" >> $AWS_LOG
+}
+
 calculate_targets () {
   echo "Calculating the targets to insert on SQS..."
 
-  PORTS=`expr "$END_PORT" - "$START_PORT" + 1`
+  PORTS=$(expr "$END_PORT" - "$START_PORT" + 1)
 
-  if [ $CONTAINERS -gt $PORTS ]; then
+  if [ "$CONTAINERS" -gt "$PORTS" ]; then
       CONTAINERS=$PORTS
   fi
 
-  reazon=`echo "$PORTS / $CONTAINERS" | bc`
-  remain=`echo "$PORTS % $CONTAINERS" | bc`
+  quotient=$(echo "$PORTS / $CONTAINERS" | bc)
+  remain=$(echo "$PORTS % $CONTAINERS" | bc)
 
-  targets_file='targets.json'
-  echo '[' > $targets_file
-  count=$START_PORT
-  while [  $count -le $END_PORT ]; do
-      start=$count
-      end=`expr $count + $reazon - 1`
-      if [ $end -gt $END_PORT ]; then
+  batch_file='batch.json'
+  batch_count=0
+  port=$START_PORT
+  printf '[' > $batch_file
+
+  while [ "$port" -le "$END_PORT" ]; do
+      start=$port
+      end=$(expr "$port" + "$quotient" - 1)
+
+      if [ "$end" -gt "$END_PORT" ]; then
         end=$END_PORT
       fi
 
-      if [ $remain -gt 0 ]; then
-        end=$(( end+1 ))
-        remain=$(( remain-1 ))
-        count=$(( count+1 ))
+      if [ "$remain" -gt 0 ]; then
+        end=$(( end + 1 ))
+        remain=$(( remain - 1 ))
+        port=$(( port + 1 ))
       fi
 
-      count=$(( count+$reazon )) #TODO: don't use count after here
-
-
-      separator=''
-      if [ $count -lt $END_PORT ]; then
-        separator=','
-      fi
+      port=$(( port + quotient ))
 
       range="$start-$end"
-      echo "{ \"Id\": \"$range\"," >> $targets_file
-      echo "\"MessageBody\": \"$range\" }$separator" >> $targets_file
-  done
-  echo ']' >> $targets_file
+      batch_count=$(( batch_count + 1 ))
 
-  aws --endpoint-url=http://sqs:4576 sqs send-message-batch \
-      --queue-url http://sqs:4576/000000000000/targets \
-      --entries file://$targets_file >> $AWS_LOG
+      if [ "$batch_count" -gt 1 ]; then
+        printf ',' >> $batch_file
+      fi
+      printf '{"Id":"%s","MessageBody":"%s"}' "$range" "$range" >> $batch_file
+
+      if [ "$batch_count" -eq 10 ] || [ "$port" -gt "$END_PORT" ]; then
+        printf ']' >> $batch_file
+        send_targets_batch "$batch_file"
+        batch_count=0
+        printf '[' > $batch_file
+      fi
+  done
 }
 
 create_sqs_targets_endpoint () {
   echo "Checking if SQS targets endpoint exists..."
 
   queues=$(aws --endpoint-url=http://sqs:4576 sqs list-queues | jq .QueueUrls | tr -d \")
-  if [[ ! "${queues[@]}" =~ "targets" ]]; then #TODO: remove restriction to BASH interpreter
+  if ! echo "$queues" | grep -q 'targets'; then
       echo "Creating SQS endpoint..."
 
       aws --endpoint-url=http://sqs:4576 sqs create-queue --queue-name targets > $AWS_LOG
@@ -81,7 +90,7 @@ create_sqs_reports_endpoint () {
   echo "Checking if SQS reports endpoint exists..."
 
   queues=$(aws --endpoint-url=http://sqs:4576 sqs list-queues | jq .QueueUrls | tr -d \")
-  if [[ ! "${queues[@]}" =~ "reports" ]]; then #TODO: remove restriction to BASH interpreter
+  if ! echo "$queues" | grep -q 'reports'; then
       echo "Creating SQS endpoint..."
 
       aws --endpoint-url=http://sqs:4576 sqs create-queue --queue-name reports >> $AWS_LOG
