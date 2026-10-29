@@ -1,0 +1,3 @@
+kind: 'Changed'
+body: 'moved the agent instructions from `CLAUDE.md` to `AGENTS.md`, keeping a `CLAUDE.md` that imports it, and refreshed `AGENTS.md`, `.github/copilot-instructions.md`, `.github/skills/code-review/SKILL.md`, `README.md`, and `CONTRIBUTING.md` to match the code: `yarn build` is enough before `./bin/run`, `yarn test` always exits 0, `README.md` is hand-maintained, the `NMAPReportService` and `NMAPReadableReport` names, the hard-coded `docker-compose.yml` name, the real steps for adding a scanner, the LocalStack SQS endpoint, the Yarn 4 and TypeScript 5 prerequisites, and the required `<service>` argument of `start`'
+time: '2026-10-29T00:55:12.495167848Z'

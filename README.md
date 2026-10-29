@@ -51,8 +51,10 @@ yarn prepack
 ## Usage
 
 ```bash
-./bin/run start
+./bin/run start <service> [--build] [--containers <n>] [--set-env KEY=VALUE]
 ```
+
+`<service>` names a directory under `tools/` that contains a `docker-compose.yml`. Only `nmap` is implemented today.
 
 ## Contributing
 
