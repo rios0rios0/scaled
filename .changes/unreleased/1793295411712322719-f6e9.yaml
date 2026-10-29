@@ -1,0 +1,3 @@
+kind: 'Security'
+body: 'updated the transitive `brace-expansion` (`1.1.21`, `2.1.7`, `5.0.12`) and `js-yaml` (`4.3.2`) resolutions in `yarn.lock` to fix the high-severity denial-of-service advisories GHSA-6j4f-fj2g-mc7p and GHSA-2883-xcg3-v3hh reported by `yarn npm audit`'
+time: '2026-10-29T17:36:51.712215149Z'
