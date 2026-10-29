@@ -20,7 +20,7 @@ The canonical engineering standards live in the
 repo-tailored index into that guide plus the rules that only apply here. Precedence, highest
 first:
 
-1. This repository's `.github/copilot-instructions.md`, `CLAUDE.md`, and `CONTRIBUTING.md` —
+1. This repository's `.github/copilot-instructions.md`, `AGENTS.md`, and `CONTRIBUTING.md` —
    they describe *this* codebase and its load-bearing invariants.
 2. The **rios0rios0/guide** wiki — the shared standard.
 3. General language idiom.
@@ -33,7 +33,7 @@ guide disagree, the guide wins and this file should be corrected in the same pul
 | Topic | Page |
 |-------|------|
 | JavaScript & TypeScript Conventions — file names, no `any`, immutability | [JavaScript](https://github.com/rios0rios0/guide/wiki/JavaScript) |
-| JavaScript & TypeScript Testing — Jest and BDD blocks | [JavaScript-Testing](https://github.com/rios0rios0/guide/wiki/JavaScript-Testing) |
+| JavaScript & TypeScript Testing — BDD blocks (this repo runs mocha + chai, not Jest) | [JavaScript-Testing](https://github.com/rios0rios0/guide/wiki/JavaScript-Testing) |
 | YAML Conventions — `.yaml`, single quotes, unquoted scalars | [YAML](https://github.com/rios0rios0/guide/wiki/YAML) |
 | Architecture — Clean Architecture and SOLID | [Architecture](https://github.com/rios0rios0/guide/wiki/Architecture) |
 | Backend Design — layers, actors, dependency direction | [Backend-Design](https://github.com/rios0rios0/guide/wiki/Backend-Design) |
@@ -71,8 +71,8 @@ them before the generic ones.
 
 ```
 src/commands/start.ts        the only CLI command
-src/domain/entities|repositories|services/    contracts (NmapReadableReport, ReportService)
-src/infrastructure/repositories|services/     implementations (NmapReportService)
+src/domain/entities|repositories|services/    contracts (NMAPReadableReport, ReportService)
+src/infrastructure/repositories|services/     implementations (NMAPReportService)
 src/resolver/strategy/       pluggable execution strategies behind ResolverInterface
 src/manager/                 ServiceManager: start / stop / report lifecycle
 src/helpers/                 display.ts, sqs.ts
@@ -81,7 +81,8 @@ tools/nmap|nikto|sqlmap/     dockerised tool definitions
 
 - **A new execution target is a new strategy under `src/resolver/strategy/`** implementing `ResolverInterface` — only `LocalResolver` exists so far. Adding a branch to the resolver instead of a strategy is a finding.
 - **`--set-env KEY=VALUE`, service names, and container counts are user input that reaches a shell.** Concatenating any of them into a command string is a **Critical** command-injection finding; pass arguments as an array and validate the shape first.
-- **`yarn prepack` must run before `./bin/run`** because the compiled output lives in `lib/`. A change to the build output path or the oclif manifest generation breaks the CLI without breaking the tests.
+- **`./bin/run` loads compiled commands from `lib/commands`** (`oclif.commands` in `package.json`). A change to the build output path or that setting breaks the CLI without breaking the tests.
+- **`tools/<name>/docker-compose.yml` is a hard-coded file name** in `src/resolver/strategy/local.ts` and `src/manager/index.ts`. Renaming it, or adding a tool under another name, makes the service unresolvable.
 - **Domain contracts stay free of oclif, AWS, and Docker.** `src/domain/` defines interfaces; `src/infrastructure/` implements them. An AWS SDK import in the domain layer is a Critical finding.
 - **`helpers/sqs.ts` handles AWS credentials** — they come from the environment or the instance role, never from a flag default or a committed literal, and must not be logged.
 - **The container lifecycle must be leak-free.** `ServiceManager.start`/`stop` should leave nothing running when a command fails halfway; check the error paths, not just the happy path.
@@ -92,9 +93,10 @@ tools/nmap|nikto|sqlmap/     dockerised tool definitions
 
 ```bash
 yarn install
-yarn prepack           # tsc → lib/, oclif manifest, README update (~10-20 s)
+yarn build            # tsc → lib/ (enough for ./bin/run)
+yarn prepack           # clean lib/, tsc → lib/, oclif manifest (~10-20 s)
 yarn lint              # ESLint, airbnb-typescript
-yarn test              # mocha + nyc
+yarn test              # mocha + nyc; always exits 0 (`|| true`), read the output
 ./bin/run start <service> [--build] [--containers <n>] [--set-env KEY=VALUE]
 ```
 
@@ -143,7 +145,9 @@ so that adding a case is a new entry rather than an edit to the dispatcher. Flag
 
 ### YAML
 
-See [YAML Conventions](https://github.com/rios0rios0/guide/wiki/YAML). The extension is `.yaml`, never `.yml`. String values are
+See [YAML Conventions](https://github.com/rios0rios0/guide/wiki/YAML). The extension is `.yaml`, never `.yml` — except names
+the code or a tool fixes: `tools/<name>/docker-compose.yml` is hard-coded in `src/resolver/strategy/local.ts` and
+`src/manager/index.ts`, and `.yarnrc.yml` is Yarn's. String values are
 single-quoted; double quotes appear only where interpolation or an escape needs them;
 booleans and numbers are never quoted. This applies to workflows, compose files, manifests,
 and YAML blocks inside Markdown.
@@ -152,8 +156,8 @@ and YAML blocks inside Markdown.
 
 See [Tests](https://github.com/rios0rios0/guide/wiki/Tests).
 
-- `test/` is thin today — a behavioural change should bring a test with it, using the BDD blocks below.
-- Report parsing (`NmapReportService`) is the easiest thing to test well: feed a recorded Nmap output fixture and assert the parsed entity.
+- `test/` has no specs yet (`.gitkeep` only), and `yarn test` exits 0 regardless (`|| true`) — a behavioural change should bring a test with it, using the BDD blocks below.
+- Report parsing (`NMAPReportService`) is the easiest thing to test well: feed a recorded Nmap output fixture and assert the parsed entity.
 
 ### Rules that hold for every test in this repository
 
@@ -196,7 +200,7 @@ hand.
 - Fragment bodies start with a lowercase verb in simple past tense, capitalise proper nouns
   (GitHub, Go, Docker), and wrap code identifiers and versions in backticks.
 - `README.md` is updated whenever usage, setup, configuration, or architecture changes;
-  `.github/copilot-instructions.md` and `CLAUDE.md` whenever the workflow, commands, or
+  `.github/copilot-instructions.md` and `AGENTS.md` whenever the workflow, commands, or
   structure changes. Documentation and code ship in one commit.
 
 ## Git Flow and pull-request hygiene
@@ -260,7 +264,7 @@ A review that raises noise gets ignored. Do not report these:
 ### Change-control checklist
 - [ ] Changelog entry present for every behavioural change
 - [ ] `README.md` updated if usage, setup, or architecture changed
-- [ ] `.github/copilot-instructions.md` and `CLAUDE.md` updated if the workflow, commands, or structure changed
+- [ ] `.github/copilot-instructions.md` and `AGENTS.md` updated if the workflow, commands, or structure changed
 - [ ] Commit messages follow `type(SCOPE): message` in simple past tense
 - [ ] Breaking changes flagged in the commit footer, the changelog, and the PR description
 

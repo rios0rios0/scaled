@@ -8,8 +8,9 @@ development practices, refer to the **[Development Guide](https://github.com/rio
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) v8.0+
-- [Yarn](https://yarnpkg.com/) v1.x
-- [TypeScript](https://www.typescriptlang.org/) v3.3+ (installed via Yarn)
+- [Yarn](https://yarnpkg.com/) 4.x (Berry; pinned by `packageManager` in `package.json`)
+- [TypeScript](https://www.typescriptlang.org/) 5.x (installed via Yarn)
+- [Docker](https://www.docker.com/) with the `docker-compose` binary (the CLI invokes it to run the tools)
 
 ## Development Workflow
 
@@ -31,13 +32,13 @@ development practices, refer to the **[Development Guide](https://github.com/rio
    ```bash
    yarn lint:fix
    ```
-7. Run tests with coverage:
+7. Run tests with coverage (the script always exits 0, so read the output):
    ```bash
    yarn test
    ```
-8. Run the CLI locally:
+8. Run the CLI locally (`<service>` is a directory under `tools/` with a `docker-compose.yml`; only `nmap` today):
    ```bash
-   ./bin/run start
+   ./bin/run start <service>
    ```
 9. Commit following the [commit conventions](https://github.com/rios0rios0/guide/wiki/Life-Cycle/Git-Flow)
 10. Open a pull request against `main`
