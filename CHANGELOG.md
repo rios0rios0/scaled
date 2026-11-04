@@ -22,6 +22,16 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-11-04
+
+### Changed
+
+- moved the agent instructions from `CLAUDE.md` to `AGENTS.md`, keeping a `CLAUDE.md` that imports it, and refreshed `AGENTS.md`, `.github/copilot-instructions.md`, `.github/skills/code-review/SKILL.md`, `README.md`, and `CONTRIBUTING.md` to match the code: `yarn build` is enough before `./bin/run`, `yarn test` always exits 0, `README.md` is hand-maintained, the `NMAPReportService` and `NMAPReadableReport` names, the hard-coded `docker-compose.yml` name, the real steps for adding a scanner, the LocalStack SQS endpoint, the Yarn 4 and TypeScript 5 prerequisites, and the required `<service>` argument of `start`
+
+### Security
+
+- updated the transitive `brace-expansion` (`1.1.21`, `2.1.7`, `5.0.12`) and `js-yaml` (`4.3.2`) resolutions in `yarn.lock` to fix the high-severity denial-of-service advisories GHSA-6j4f-fj2g-mc7p and GHSA-2883-xcg3-v3hh reported by `yarn npm audit`
+
 ## [0.4.2] - 2026-09-08
 
 ### Changed
